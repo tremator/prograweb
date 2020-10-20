@@ -1,16 +1,23 @@
 <?php
+  session_start();
+  if ($_SESSION && $_SESSION['user']){
+    //user already logged in
+    header('Location: dashboard.php');
+  }
+
   $message = "";
   if(!empty($_REQUEST['status'])) {
-    $message = $_REQUEST['message'];
     switch($_REQUEST['status']) {
-       case 'success':
-         $message = 'User was added succesfully';
-       break;
-       case 'error':
-         $message = 'There was a problem inserting the user';
-       break;
-     }
+      case 'login':
+        $message = 'User does not exists';
+      break;
+      case 'error':
+        $message = 'There was a problem inserting the user';
+      break;
+    }
   }
+
+ 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,23 +33,21 @@
 </head>
 <body>
 <div class="container">
-<a href=""></a>
-  <?php require ('header.php') ?>
     <div class="msg">
       <?php echo $message; ?>
     </div>
-    <h1>Form Registration</h1>
-    <form action="createCategory.php" method="POST" class="form-inline" role="form">
+    <h1>User Login</h1>
+    <form action="login.php" method="POST" class="form-inline" role="form">
       <div class="form-group">
-        <label class="sr-only" for="">Name</label>
-        <input type="text" class="form-control" name="name" placeholder="Categorie Name">
+        <label class="sr-only" for="">Username</label>
+        <input type="text" class="form-control" id="" name="username" placeholder="Your username">
       </div>
       <div class="form-group">
-        <label class="sr-only" for="">Description</label>
-        <input type="text" class="form-control" name="description" placeholder="Description">
+        <label class="sr-only" for="">Password</label>
+        <input type="password" class="form-control" id="" name="password" placeholder="Your password">
       </div>
 
-      <input type="submit" class="btn btn-primary" value="Submit"></input>
+      <button type="submit" class="btn btn-primary">Login</button>
     </form>
 </div>
 
