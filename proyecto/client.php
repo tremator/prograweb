@@ -6,11 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>
-   <script>
-        var f = new Date();
-        document.write(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear());
-   </script>
-    </h1>
+    <h1>CLIENT</h1>
 </body>
 </html>
