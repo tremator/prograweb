@@ -9,10 +9,13 @@
 <body>
     <h1>Categories</h1>
     
-    <div></div>
-    <a href="clientCart.php">
+    <button>
+        <a href="clientCart.php">
     Cart
     </a>
+    
+    </button>
+    <br>
     <?php
         $response = chargeCategories();
         while($row = $response->fetch_assoc()) {

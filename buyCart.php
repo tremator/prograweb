@@ -8,19 +8,16 @@
     $totalPrice = 0;
     $today = getdate();
     $date = "{$today['year']}/{$today['month']}/{$today['mday']}";
-    /*
     while($row = $result->fetch_assoc()) {
         $totalPrice += $row['precio'];
     }
     $newOrder = ['fecha' => $date, 'total' => $totalPrice,'id_user' => $user['id']];
     $order = createOrder($newOrder);
-    var_dump($order);
-    die;
-    */
-    while($row = $result->fetch_assoc()) {
-        $buy = ['id' => $row['id_producto'], 'cantidad' => $row['cantidad'], 'total' => $row['precio'], 'id_user' => $row['id_user'],'fecha' => $date];
+    $result = getClientCart($user['id']);
+    while($row = $result->fetch_assoc()){
+        $buy = ['id' => $row['id_producto'], 'cantidad' => $row['cantidad'], 'total' => $row['precio'], 'id_user' => $row['id_user'],'fecha' => $date,'order_id' => $order];
         $totalPrice += $row['precio'];
-        buy($buy);
+        var_dump( buy($buy));
     }
 
 

@@ -12,9 +12,9 @@
         </a>
     </button>
     </button>
-        <div height = '100'>
-        </div>
-        <button>
+    <div height = '100'>
+     </div>
+    <button>
         <a href="clientCart.php">
     Cart
     </a>

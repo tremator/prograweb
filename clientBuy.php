@@ -11,9 +11,9 @@
         require('functions.php');
         session_start();
         $user = $_SESSION['user'];
-        $result = getUserBuys($user['id']);
+        $result = getClientOrders($user['id']);
         while($row = $result->fetch_assoc()) {
-            echo "<a href='buyDetails.php>id={$row['id']}'>{$row['fecha']}</a>............................{$row['total']} <br>";
+            echo "<a href='buyDetails.php?id={$row['id']}&total={$row['total']}&fecha={$row['fecha']}'>{$row['fecha']}</a>............................{$row['total']} <br>";
         }
     ?>
     

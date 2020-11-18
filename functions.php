@@ -38,6 +38,10 @@ function saveUser($user) {
     return $result->fetch_array();
   }
 
+  /*
+    CONECTIONS FOR THE CATEGORIES
+  */
+
   function chargeCategories(){
     $conn = getConnection();
     $sql = "SELECT * FROM `categories` WHERE father = 'father'";
@@ -84,17 +88,6 @@ function saveUser($user) {
     $conn->close();
     return true;
   }
-  function chargeProductos($categorie){
-    $conn = getConnection();
-    $sql = "SELECT * FROM `productos` WHERE categorie = '{$categorie}'";
-    $result = $conn ->query($sql);
-    if($conn->connect_errno){
-      $conn->close();
-      return false;
-    }
-    $conn->close();
-    return  $result;
-  }
   function updateCategorie($categorie){
     $conn = getConnection();
     $sql = "UPDATE `categories` SET `name`='{$categorie['name']}',`description`='name' WHERE id = '{$categorie['id']}'";
@@ -118,6 +111,32 @@ function saveUser($user) {
     $conn->close();
     return  $result;
   }
+  function getCategorie($id){
+    $conn = getConnection();
+    $sql = "SELECT * FROM `categories` WHERE id = '{$id}'";
+    $result = $conn ->query($sql);
+    if($conn->connect_errno){
+      $conn->close();
+      return false;
+    }
+    $conn->close();
+    return  $result;
+  }
+  /*
+    CONECTIONS FOR THE PRODUCTS
+  */
+  function chargeProductos($categorie){
+    $conn = getConnection();
+    $sql = "SELECT * FROM `productos` WHERE categorie = '{$categorie}'";
+    $result = $conn ->query($sql);
+    if($conn->connect_errno){
+      $conn->close();
+      return false;
+    }
+    $conn->close();
+    return  $result;
+  }
+  
   function uploadPicture(){
     $fileObject = $_FILES['image'];
     $target_dir = "images/";
@@ -190,21 +209,26 @@ function saveUser($user) {
         return false;
       }
       $conn->close();
-      return  $result;
+      return  $result->fetch_assoc();
+    }
+    function getProductsByStock($stock){
+      $conn = getConnection();
+        $sql = "SELECT * FROM `productos` WHERE stock <= $stock ";
+        $result = $conn ->query($sql);
+        if($conn->connect_errno){
+          $conn->close();
+          return false;
+        }
+        $conn->close();
+        return  $result;
     }
 
-    function getCategorie($id){
-      $conn = getConnection();
-      $sql = "SELECT * FROM `categories` WHERE id = '{$id}'";
-      $result = $conn ->query($sql);
-      if($conn->connect_errno){
-        $conn->close();
-        return false;
-      }
-      $conn->close();
-      return  $result;
-    }
     
+    
+    /*
+      ACTIONS FOR THE USER
+    */
+
     function getClients(){
       $conn = getConnection();
       $sql = "SELECT * FROM users WHERE role = 'Cliente'";
@@ -218,7 +242,17 @@ function saveUser($user) {
       return $result;
     }
   
-
+    function getClientOrders($id){
+      $conn = getConnection();
+      $sql = "SELECT * FROM `userbuy` WHERE user_id = '{$id}'";
+      $result = $conn ->query($sql);
+      if($conn->connect_errno){
+        $conn->close();
+        return false;
+      }
+      $conn->close();
+      return  $result;
+    }
 
     function addCartProduct($product){
       $conn = getConnection();
@@ -247,9 +281,9 @@ function saveUser($user) {
     function buy($product){
       $conn = getConnection();
 
-      $sql = "INSERT INTO `ventas`(`id_producto`, `cantidad`, `total`, `id_user`, `fecha`) VALUES ('{$product['id']}','{$product['cantidad']}','{$product['total']}','{$product['id_user']}','{$product['fecha']}' )";
+      $sql = "INSERT INTO `ventas`(`id_producto`, `cantidad`, `total`, `id_user`, `fecha`, `order_id`) VALUES ('{$product['id']}','{$product['cantidad']}','{$product['total']}','{$product['id_user']}','{$product['fecha']}','{$product['order_id']}')";
+
       $conn->query($sql);
-    
       if ($conn->connect_errno) {
         $conn->close();
         return false;
@@ -296,7 +330,7 @@ function saveUser($user) {
   }
   function getUserBuys($id){
     $conn = getConnection();
-      $sql = "SELECT * FROM `ventas` WHERE id_user = $id";
+      $sql = "SELECT * FROM `ventas` WHERE order_id = $id";
       $result = $conn ->query($sql);
       if($conn->connect_errno){
         $conn->close();
@@ -319,15 +353,5 @@ function saveUser($user) {
     $conn->close();
     return  $result;
   }
-  function getProductsByStock($stock){
-    $conn = getConnection();
-      $sql = "SELECT * FROM `productos` WHERE stock <= $stock ";
-      $result = $conn ->query($sql);
-      if($conn->connect_errno){
-        $conn->close();
-        return false;
-      }
-      $conn->close();
-      return  $result;
-  }
+ 
 
